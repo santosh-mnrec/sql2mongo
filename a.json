@@ -1,0 +1,19 @@
+{
+    "where": {
+        "search": {
+            "predicate": [
+                {
+                    "field": 1,
+                    "operator": "+",
+                    "value": "10"
+                },
+                {
+                    "field": 2,
+                    "operator": "+",
+                    "value": "20",
+                    "parent": "and"
+                }
+            ]
+        }
+    }
+}
