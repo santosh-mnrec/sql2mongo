@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using Antlr4.Runtime;
 
 namespace QueryLanguage
 {
     public class QueryManager
     {
-        public  static List<Device> search(string query)
+
+        public static List<Device> search(string query)
         {
 
 
@@ -18,17 +20,12 @@ namespace QueryLanguage
             QueryParser parser = new QueryParser(tokens);
             var tree = parser.query();
 
- System.Console.WriteLine(tree.ToStringTree(parser));
+            System.Console.WriteLine(tree.ToStringTree(parser));
 
             var visitor = new QueryLanguageVisitor();
             var jpqlQuery = visitor.Visit(tree);
-           
-            System.Console.WriteLine(jpqlQuery);
+            System.Console.WriteLine(jpqlQuery.ToString());
 
-            // var queryObject = entityManager.createQuery(jpqlQuery);
-            // foreach (var entry int visitor.getParameters().entrySet()) {
-            //     queryObject.setParameter(entry.getKey(), entry.getValue());
-            // }
             return null;
         }
 
@@ -36,4 +33,6 @@ namespace QueryLanguage
         {
         }
     }
+
+
 }

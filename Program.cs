@@ -6,7 +6,7 @@ namespace QueryLanguage
     {
         static void Main(string[] args)
         {
-           QueryManager.search("Select last_name from '/path/to/index/' where first_name='Foo' and age = 30 and x=1");
+           QueryManager.search("select id,salary from employee where age = 35 and  id=2 or x=2 and y=4");
 
         }
     }
