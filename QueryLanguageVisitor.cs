@@ -42,12 +42,7 @@ namespace QueryLanguage
             Visit(context.from_stmt());
             Visit(context.where_stmt());
             Console.WriteLine(elements);
-            var where = elements.Pop();
-            var find = elements.Pop();
-            var select = elements.Pop();
-
-            return find + ".find(" + JsonConvert.SerializeObject(where) + "," + JsonConvert.SerializeObject(select) + ")";
-
+            return BuildMongoQuery2.BuildMongoQuery(elements);
 
         }
 
