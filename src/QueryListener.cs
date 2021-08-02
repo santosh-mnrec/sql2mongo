@@ -319,42 +319,6 @@ public interface IQueryListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTerm([NotNull] QueryParser.TermContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>Phrase</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPhrase([NotNull] QueryParser.PhraseContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>Phrase</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPhrase([NotNull] QueryParser.PhraseContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>Date</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDate([NotNull] QueryParser.DateContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>Date</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDate([NotNull] QueryParser.DateContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>MULTI_PHRASE</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMULTI_PHRASE([NotNull] QueryParser.MULTI_PHRASEContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>MULTI_PHRASE</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMULTI_PHRASE([NotNull] QueryParser.MULTI_PHRASEContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="QueryParser.regexp"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -405,16 +369,6 @@ public interface IQueryListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitNumber_list([NotNull] QueryParser.Number_listContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="QueryParser.date_list"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDate_list([NotNull] QueryParser.Date_listContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="QueryParser.date_list"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDate_list([NotNull] QueryParser.Date_listContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="QueryParser.term_list"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -424,14 +378,4 @@ public interface IQueryListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTerm_list([NotNull] QueryParser.Term_listContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="QueryParser.phrase_list"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPhrase_list([NotNull] QueryParser.Phrase_listContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="QueryParser.phrase_list"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPhrase_list([NotNull] QueryParser.Phrase_listContext context);
 }

@@ -7,9 +7,8 @@ namespace QueryLanguage
     public class QueryManager
     {
 
-        public static List<Device> search(string query)
+        public static void arch(string query)
         {
-
 
 
             var input = new AntlrInputStream(query);
@@ -26,12 +25,10 @@ namespace QueryLanguage
             var jpqlQuery = visitor.Visit(tree);
             System.Console.WriteLine(jpqlQuery.ToString());
 
-            return null;
+           
         }
 
-        public class Device
-        {
-        }
+
     }
 
 

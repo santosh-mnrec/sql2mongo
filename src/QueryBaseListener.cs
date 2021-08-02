@@ -375,48 +375,6 @@ public partial class QueryBaseListener : IQueryListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTerm([NotNull] QueryParser.TermContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>Phrase</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPhrase([NotNull] QueryParser.PhraseContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>Phrase</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPhrase([NotNull] QueryParser.PhraseContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>Date</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDate([NotNull] QueryParser.DateContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>Date</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDate([NotNull] QueryParser.DateContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>MULTI_PHRASE</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMULTI_PHRASE([NotNull] QueryParser.MULTI_PHRASEContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>MULTI_PHRASE</c>
-	/// labeled alternative in <see cref="QueryParser.value"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMULTI_PHRASE([NotNull] QueryParser.MULTI_PHRASEContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="QueryParser.regexp"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -477,18 +435,6 @@ public partial class QueryBaseListener : IQueryListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNumber_list([NotNull] QueryParser.Number_listContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="QueryParser.date_list"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterDate_list([NotNull] QueryParser.Date_listContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="QueryParser.date_list"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitDate_list([NotNull] QueryParser.Date_listContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="QueryParser.term_list"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -500,18 +446,6 @@ public partial class QueryBaseListener : IQueryListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTerm_list([NotNull] QueryParser.Term_listContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="QueryParser.phrase_list"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPhrase_list([NotNull] QueryParser.Phrase_listContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="QueryParser.phrase_list"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPhrase_list([NotNull] QueryParser.Phrase_listContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

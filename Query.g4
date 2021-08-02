@@ -62,12 +62,9 @@ boolean_op         :  AND         # And
 nested_predicate : boolean_op? LPAREN predicate (predicate | nested_predicate)* RPAREN
                  ;
 
-
 value      : NUMBER               # Number
            | TERM                 # Term
-           | PHRASE               # Phrase
-           | DATE                 # Date
-           | MULTI_PHRASE         # MULTI_PHRASE
+          
            ;
 
 regexp  : field MATCHES LPAREN WILD_CARD RPAREN
@@ -80,20 +77,19 @@ like : field LIKE WILD_CARD
 in : field NOT? IN value_list
    ;
 
-value_list : LPAREN (number_list | date_list | term_list | phrase_list ) RPAREN
+value_list : LPAREN (number_list  | term_list  ) RPAREN
            ;
 
 number_list : NUMBER (COMMA NUMBER)*
             ;
 
-date_list : DATE (COMMA DATE)*
-          ;
+      
 
 term_list : TERM (COMMA TERM)*
           ;
 
-phrase_list : (TERM | PHRASE) ( COMMA (TERM | PHRASE) ) *
-               ;
+
+           
 //Parser Rules End
 
 //Lexer Rules Start
@@ -120,16 +116,13 @@ fragment
 DIGIT : [0-9] ;
 NUMBER : DIGIT(DIGIT*) ;
 fragment
-DATE_SEP : [-/] ;
-DATE : (NUMBER+(DATE_SEP)?)+;
+
 FIELD : [A-Za-z]+((':'|'_')[0-9]*[A-Za-z]*)* ;
 PATH : '\''([A-Za-z]':')?('/')?((~[/])+'/')+ '\'';
 TERM : '\''(~[' *?])*'\'' ;
-PHRASE : '\''(~['*?])*'\'' ;
+
 WILD_CARD :'\''(~[' ])*'\'' ;
-MULTI_PHRASE : '\''(~[' *?])+(~['])+'\'';
-DB_QUOTE_STRING_LIT : ('"'(~["])*'"');
-//STRING_LIT : ('\''(~['])*'\'') ;
+
 
 COMMA : ',' ;
 LPAREN : '(' ;
