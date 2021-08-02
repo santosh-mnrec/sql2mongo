@@ -46,8 +46,6 @@ namespace QueryLanguage
             var find = elements.Pop();
             var select = elements.Pop();
 
-
-
             return find + ".find(" + JsonConvert.SerializeObject(where)+","+JsonConvert.SerializeObject(select)+")";
 
 

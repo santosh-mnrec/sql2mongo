@@ -21,7 +21,7 @@ namespace QueryLanguage
             _elements = elements;
 
         }
-        public object build_binary(object op, object left, object right)
+        public object BuildBinary(object op, object left, object right)
         {
 
             return new Dictionary<object, object> {
@@ -31,7 +31,13 @@ namespace QueryLanguage
                     }
                 };
         }
-         public object build_From(object op)
+        public object BuildSelect(object field){
+           
+                   
+                  return field;
+        
+        }
+         public object BuildFrom(object op)
         {
                 return "db."+op;
            
@@ -41,33 +47,33 @@ namespace QueryLanguage
             
             if (op == "$and")
             {
-                var x = build_binary(op, _elements.Pop(), _elements.Pop());
-                _elements.Push(x);
+               _elements.Push(BuildBinary(op, _elements.Pop(), _elements.Pop()));
+               
                
             }
             if (op == "$or")
             {
-                var y = build_binary(op, _elements.Pop(), _elements.Pop());
+                _elements.Push(BuildBinary(op, _elements.Pop(), _elements.Pop()));
                
-                _elements.Push(y);
+                
             }
             if (op == "$eq")
             {
-                var y = build_binary(op, _elements.Pop(), _elements.Pop());
+               _elements.Push( BuildBinary(op, _elements.Pop(), _elements.Pop()));
               
-                _elements.Push(y);
+              
             }
             if (op == "from")
             {
-                var y = build_From( _elements.Pop());
+                _elements.Push( BuildFrom( _elements.Pop()));
               
-                _elements.Push(y);
+               
             }
              if (op == "select")
             {
-                var y = build_binary( "",_elements.Pop(),"");
+                _elements.Push( BuildSelect(_elements.Pop()));
               
-                _elements.Push(y);
+              
             }
         }
     }
