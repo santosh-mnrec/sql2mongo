@@ -46,7 +46,7 @@ namespace QueryLanguage
             var find = elements.Pop();
             var select = elements.Pop();
 
-            return find + ".find(" + JsonConvert.SerializeObject(where)+","+JsonConvert.SerializeObject(select)+")";
+            return find + ".find(" + JsonConvert.SerializeObject(where) + "," + JsonConvert.SerializeObject(select) + ")";
 
 
         }
@@ -54,7 +54,7 @@ namespace QueryLanguage
         public override string VisitSelect_stmt([NotNull] QueryParser.Select_stmtContext context)
         {
 
-           // elements.Push(context.children[0].GetText());
+
             var d = new Dictionary<string, string>();
             for (int i = 1; i < context.children.Count; i++)
             {
@@ -119,7 +119,7 @@ namespace QueryLanguage
             if (context.ChildCount == 1)
             {
                 this.Visit(context.children[0]);
-                
+
 
             }
             else

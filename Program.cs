@@ -6,7 +6,7 @@ namespace QueryLanguage
     {
         static void Main(string[] args)
         {
-           QueryManager.search("select name from x where id=2 and name='x'");
+           QueryManager.search("select valid from flight where verified='true' and valid='true'");
 
         }
     }
