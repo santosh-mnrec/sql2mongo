@@ -4,6 +4,14 @@ using Newtonsoft.Json;
 
 namespace QueryLanguage
 {
+    public static class De{
+
+        public static string Serialize(this object query){
+            return JsonConvert.SerializeObject(query);
+
+
+        }
+    }
     public class BuildMongoQuery
     {
         private Stack<object> _elements;
@@ -19,30 +27,41 @@ namespace QueryLanguage
             return new Dictionary<object, object> {
                 {
                     op,
-                    new List<object> {
-                        left,
-                        right
-                    }}};
+                    new List<object> {left,right }
+                    }
+                };
+        }
+         public object build_From(object op)
+        {
+                return "db."+op;
+           
         }
         public void Parse(string op)
         {
+            
             if (op == "$and")
             {
-                var x = build_binary(op, _elements.Pop().ToString(), _elements.Pop().ToString());
-                _elements.Push(JsonConvert.SerializeObject(x));
-                Console.WriteLine(JsonConvert.SerializeObject(x));
+                var x = build_binary(op, _elements.Pop(), _elements.Pop());
+                _elements.Push(x);
+               
             }
             if (op == "$or")
             {
-                var y = build_binary(op, _elements.Pop().ToString(), _elements.Pop().ToString());
-                Console.WriteLine(JsonConvert.SerializeObject(y));
-                _elements.Push(JsonConvert.SerializeObject(y));
+                var y = build_binary(op, _elements.Pop(), _elements.Pop());
+               
+                _elements.Push(y);
             }
             if (op == "$eq")
             {
-                var y = build_binary(op, _elements.Pop().ToString(), _elements.Pop().ToString());
-                Console.WriteLine(JsonConvert.SerializeObject(y));
-                _elements.Push(JsonConvert.SerializeObject(y));
+                var y = build_binary(op, _elements.Pop(), _elements.Pop());
+              
+                _elements.Push(y);
+            }
+            if (op == "from")
+            {
+                var y = build_From( _elements.Pop());
+              
+                _elements.Push(y);
             }
         }
     }
