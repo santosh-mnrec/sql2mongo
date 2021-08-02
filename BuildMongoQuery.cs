@@ -63,6 +63,12 @@ namespace QueryLanguage
               
                 _elements.Push(y);
             }
+             if (op == "select")
+            {
+                var y = build_binary( "",_elements.Pop(),"");
+              
+                _elements.Push(y);
+            }
         }
     }
 }

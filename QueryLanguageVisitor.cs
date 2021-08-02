@@ -41,27 +41,39 @@ namespace QueryLanguage
             Visit(context.select_stmt());
             Visit(context.from_stmt());
             Visit(context.where_stmt());
+            Console.WriteLine(elements);
             var where = elements.Pop();
             var find = elements.Pop();
+            var select = elements.Pop();
 
 
-            return find + ".find(" + JsonConvert.SerializeObject(where);
+
+            return find + ".find(" + JsonConvert.SerializeObject(where)+","+JsonConvert.SerializeObject(select)+")";
 
 
         }
 
         public override string VisitSelect_stmt([NotNull] QueryParser.Select_stmtContext context)
         {
-            
-             elements.Push(context.children[0].GetText());
-             for (int i = 1; i < context.children.Count; i++)   {
-                Visit(context.children[i]);
-             }
-             return "";
+
+           // elements.Push(context.children[0].GetText());
+            var d = new Dictionary<string, string>();
+            for (int i = 1; i < context.children.Count; i++)
+            {
+                if (context.children[i].GetText() == ",")
+                {
+                    continue;
+                }
+                d.Add(context.children[i].GetText(), "1");
+
+            }
+            elements.Push(d);
+            buildMongoQuery.Parse("select");
+            return "";
         }
         public override string VisitField([NotNull] QueryParser.FieldContext context)
         {
-               
+
             return (context.GetText());
         }
         public override string VisitWhere_stmt([NotNull] QueryParser.Where_stmtContext context)
@@ -108,13 +120,14 @@ namespace QueryLanguage
             Log("VisitPredicate", ConsoleColor.Gray, context.GetText());
             if (context.ChildCount == 1)
             {
-                var expression = this.Visit(context.children[0]);
+                this.Visit(context.children[0]);
+                
 
             }
             else
             {
                 var op = this.Visit(context.children[0]);
-                var expression = this.Visit(context.children[1]); ;
+                this.Visit(context.children[1]); ;
                 buildMongoQuery.Parse(op);
             }
             return query;
@@ -131,7 +144,7 @@ namespace QueryLanguage
             var field = Visit(context.children[0]);
             var op = Visit(context.children[1]);
             var value = Visit(context.children[2]);
-            var l1 = new Dictionary<string,string>(){
+            var l1 = new Dictionary<string, string>(){
 
                 {field,value},
             };
