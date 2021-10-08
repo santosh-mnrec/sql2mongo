@@ -6,7 +6,7 @@ namespace QueryLanguage
     {
         static void Main(string[] args)
         {
-           QueryManager.search("select valid from flight where verified='true' and valid='true'");
+           QueryManager.arch("select valid from flight where verified='true' and valid='true'");
 
         }
     }

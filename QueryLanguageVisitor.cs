@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using Antlr4.Runtime.Misc;
 using Newtonsoft.Json;
@@ -42,6 +43,7 @@ namespace QueryLanguage
             Visit(context.from_stmt());
             Visit(context.where_stmt());
             Console.WriteLine(elements);
+       
             return BuildMongoQuery2.BuildMongoQuery(elements);
 
         }
@@ -132,7 +134,7 @@ namespace QueryLanguage
         {
 
             Log("VisitComparison_predicate", ConsoleColor.Gray, context.GetText());
-            var e = new Expression();
+            
 
             var field = Visit(context.children[0]);
             var op = Visit(context.children[1]);

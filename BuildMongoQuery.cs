@@ -9,11 +9,9 @@ namespace QueryLanguage
 
         //build query from stack
 
-        public static string BuildMongoQuery(Stack<string> stack)
+        public static string BuildMongoQuery(Stack<object> elements)
         {
-            string query = "";
 
-            string current = stack.Pop();
             var where = elements.Pop();
             var find = elements.Pop();
             var select = elements.Pop();
