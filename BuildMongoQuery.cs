@@ -1,32 +1,22 @@
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QueryLanguage
+namespace SqlToMongoDB
 {
-    public class BuildMongoQuery2
+    public class BuildMongoQuery
     {
-
-        //build query from stack
-
-        public static string BuildMongoQuery(Stack<object> elements)
+        private Stack<object> _elements;
+        public string BuildQuery()
         {
-            
 
-           
-            var where = elements?.Pop();
-            var find = elements?.Pop();
-            var select = elements?.Pop();
+            var where = _elements.Pop();
+            var find = _elements!.Pop();
+            var select = _elements.Pop();
 
             return find + ".find(" + JsonConvert.SerializeObject(where) + "," + JsonConvert.SerializeObject(select) + ")";
 
 
         }
-    }
-    public class BuildMongoQuery
-    {
-        private Stack<object> _elements;
-
         public BuildMongoQuery(Stack<object> elements)
         {
             _elements = elements;
@@ -49,21 +39,6 @@ namespace QueryLanguage
             return field;
 
         }
-        public object BuildFrom(object op)
-        {
-            return "db." + op;
-
-        }
-        public void Parse(string op)
-        {
-
-            if (op == "$and")
-            {
-                _elements.Push(BuildBinary(op, _elements.Pop(), _elements.Pop()));
-
-
-            }
-            if (op == "$or")
             {
                 _elements.Push(BuildBinary(op, _elements.Pop(), _elements.Pop()));
 

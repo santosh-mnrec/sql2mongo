@@ -1,164 +1,168 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Antlr4.Runtime.Misc;
-using Newtonsoft.Json;
 
-namespace QueryLanguage
+namespace SqlToMongoDB
 {
-    public class QueryLanguageVisitor : QueryBaseVisitor<ASTNode>
+
+
+    public class QueryLanguageVisitor : SqlToMongoDBBaseVisitor<string>
     {
 
+        private BuildMongoQuery buildMongoQuery;
+        private static Stack<object> elements = new Stack<object>();
 
-        private Predicate query = new Predicate();
 
-        public override ASTNode VisitQuery(QueryParser.QueryContext context)
+        public QueryLanguageVisitor()
         {
+            buildMongoQuery = new BuildMongoQuery(elements);
+        }
+
+
+        private string query = "";
+        private Stack<string> stack = new Stack<string>();
+
+        public override string VisitQuery(SqlToMongoDBParser.QueryContext context)
+        {
+           
 
             Visit(context.select_stmt());
             Visit(context.from_stmt());
             Visit(context.where_stmt());
+          
 
-
-            var r = JsonConvert.SerializeObject(query);
-            System.Console.WriteLine(r);
-            return null;
-
+            return buildMongoQuery.BuildQuery();
 
         }
 
-
-        public override ASTNode VisitField([NotNull] QueryParser.FieldContext context)
+        public override string VisitSelect_stmt([NotNull] SqlToMongoDBParser.Select_stmtContext context)
         {
 
-            return new TermNode(context.GetText());
+
+            var d = new Dictionary<string, string>();
+            for (int i = 1; i < context.children.Count; i++)
+            {
+                if (context.children[i].GetText() == ",")
+                {
+                    continue;
+                }
+                d.Add(context.children[i].GetText(), "1");
+
+            }
+            elements.Push(d);
+            buildMongoQuery.Parse("select");
+            return "";
         }
-        public override ASTNode VisitWhere_stmt([NotNull] QueryParser.Where_stmtContext context)
+        public override string VisitField([NotNull] SqlToMongoDBParser.FieldContext context)
         {
-            System.Console.WriteLine("Visiting Where");
 
+            return (context.GetText());
+        }
+        public override string VisitWhere_stmt([NotNull] SqlToMongoDBParser.Where_stmtContext context)
+        {
 
             foreach (var x in context.search_condition())
             {
-                System.Console.WriteLine(x.GetText());
 
+                query += Visit(x);
 
-                Visit(x);
             }
+
+            return query;
+
+
+        }
+        public override string VisitFrom_stmt(SqlToMongoDBParser.From_stmtContext context)
+        {
+
+
+           
+            elements.Push(context.children[1].GetText());
+            buildMongoQuery.Parse("from");
             return null;
-
-
-        }
-        public override ASTNode VisitFrom_stmt(QueryParser.From_stmtContext context)
-        {
-
-
-            System.Console.WriteLine("Visiting From");
-            System.Console.Write(context.GetText());
-
-
-
-            return null;
         }
 
-        public override ASTNode VisitSearch_condition([NotNull] QueryParser.Search_conditionContext context)
+        public override string VisitSearch_condition([NotNull] SqlToMongoDBParser.Search_conditionContext context)
         {
 
-            return VisitChildren(context);
+            VisitChildren(context);
+            return query; ;
         }
 
 
-        public override ASTNode VisitFunction_predicate([NotNull] QueryParser.Function_predicateContext context)
+        public override string VisitPredicate([NotNull] SqlToMongoDBParser.PredicateContext context)
+        {
 
-        {
-            return VisitChildren(context);
-        }
-        public override ASTNode VisitPredicate([NotNull] QueryParser.PredicateContext context)
-        {
-            System.Console.WriteLine("predicate");
+
+           
             if (context.ChildCount == 1)
             {
-                var binaryNode = this.Visit(context.children[0]) as Predicate;
-                query.predicates.Add(binaryNode);
+                this.Visit(context.children[0]);
+
+
             }
             else
             {
-
-                var predicate = new Predicate();
                 var op = this.Visit(context.children[0]);
-
-
-                var binaryNode = this.Visit(context.children[1]);;
-                
-                
-                predicate=(Predicate)binaryNode;
-                predicate.parent = op.ToString();
-                query.predicates.Add(predicate);
-
+                this.Visit(context.children[1]); ;
+                buildMongoQuery.Parse(op);
             }
             return query;
 
 
 
         }
-        public override ASTNode VisitComparison_predicate([NotNull] QueryParser.Comparison_predicateContext context)
+        public override string VisitComparison_predicate([NotNull] SqlToMongoDBParser.Comparison_predicateContext context)
         {
 
-            System.Console.WriteLine("comp Predicate");
-            var temp = new Predicate();
+           
 
-            var left = Visit(context.children[1]);
-            var right = Visit(context.children[2]);
+
             var field = Visit(context.children[0]);
+            var op = Visit(context.children[1]);
+            var value = Visit(context.children[2]);
+            var l1 = new Dictionary<string, string>(){
 
-            temp.field = field;
-            temp.parent = left.ToString();
-            temp.value = right;
-
-
-            return temp;
-
-
+                {field,value},
+            };
+            elements.Push(l1);
+            return query;
 
         }
-        public override ASTNode VisitRange_op([NotNull] QueryParser.Range_opContext context)
+      
+        public override string VisitAnd([NotNull] SqlToMongoDBParser.AndContext context)
         {
-            return base.VisitRange_op(context);
+            
+
+            return "$and";
+
         }
-        public override ASTNode VisitAnd([NotNull] QueryParser.AndContext context)
+
+
+        public override string VisitOr([NotNull] SqlToMongoDBParser.OrContext context)
         {
-            System.Console.WriteLine("Visiting AND");
-
-            return new TermNode("$and");
-
+           
+            return "$or";
         }
-
-        public override ASTNode VisitOr([NotNull] QueryParser.OrContext context)
+        public override string VisitEquals([NotNull] SqlToMongoDBParser.EqualsContext context)
         {
-            System.Console.WriteLine("Visiting OR");
+            
 
+            return "$eq";
 
-            return new TermNode("$or");
         }
-        public override ASTNode VisitEquals([NotNull] QueryParser.EqualsContext context)
+        public override string VisitTerm([NotNull] SqlToMongoDBParser.TermContext context)
         {
-            System.Console.WriteLine("Visiting Eq");
+           
 
-
-
-
-            return new TermNode("$eq");
-
+            return context.GetText();
         }
-        public override ASTNode VisitTerm([NotNull] QueryParser.TermContext context)
+        public override string VisitNumber([NotNull] SqlToMongoDBParser.NumberContext context)
         {
-            System.Console.WriteLine("Visiting term");
-            return new TermNode(context.GetText());
+
+            return context.GetText();
         }
-        public override ASTNode VisitNumber([NotNull] QueryParser.NumberContext context)
-        {
-            return new TermNode(context.GetText());
-        }
+
+       
 
     }
 }
