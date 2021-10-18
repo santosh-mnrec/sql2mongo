@@ -13,10 +13,10 @@ namespace QueryLanguage
 
             var input = new AntlrInputStream(query);
 
-            QueryLexer lexer = new QueryLexer(input);
+            var lexer = new SqlToMongoDBLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            QueryParser parser = new QueryParser(tokens);
+            var parser = new SqlToMongoDBParser(tokens);
             var tree = parser.query();
 
             System.Console.WriteLine(tree.ToStringTree(parser));

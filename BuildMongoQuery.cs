@@ -13,7 +13,7 @@ namespace QueryLanguage
         {
 
             var where = elements.Pop();
-            var find = elements.Pop();
+            var find = elements!.Pop();
             var select = elements.Pop();
 
             return find + ".find(" + JsonConvert.SerializeObject(where) + "," + JsonConvert.SerializeObject(select) + ")";

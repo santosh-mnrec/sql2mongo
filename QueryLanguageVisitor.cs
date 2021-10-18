@@ -10,7 +10,7 @@ namespace QueryLanguage
 {
 
 
-    public class QueryLanguageVisitor : QueryBaseVisitor<string>
+    public class QueryLanguageVisitor : SqlToMongoDBBaseVisitor<string>
     {
 
         private BuildMongoQuery buildMongoQuery;
@@ -35,7 +35,7 @@ namespace QueryLanguage
         private string query = "";
         private Stack<string> stack = new Stack<string>();
 
-        public override string VisitQuery(QueryParser.QueryContext context)
+        public override string VisitQuery(SqlToMongoDBParser.QueryContext context)
         {
             Log("VisitQuery", ConsoleColor.Red, context.GetText());
 
@@ -48,7 +48,7 @@ namespace QueryLanguage
 
         }
 
-        public override string VisitSelect_stmt([NotNull] QueryParser.Select_stmtContext context)
+        public override string VisitSelect_stmt([NotNull] SqlToMongoDBParser.Select_stmtContext context)
         {
 
 
@@ -66,12 +66,12 @@ namespace QueryLanguage
             buildMongoQuery.Parse("select");
             return "";
         }
-        public override string VisitField([NotNull] QueryParser.FieldContext context)
+        public override string VisitField([NotNull] SqlToMongoDBParser.FieldContext context)
         {
 
             return (context.GetText());
         }
-        public override string VisitWhere_stmt([NotNull] QueryParser.Where_stmtContext context)
+        public override string VisitWhere_stmt([NotNull] SqlToMongoDBParser.Where_stmtContext context)
         {
 
             foreach (var x in context.search_condition())
@@ -85,7 +85,7 @@ namespace QueryLanguage
 
 
         }
-        public override string VisitFrom_stmt(QueryParser.From_stmtContext context)
+        public override string VisitFrom_stmt(SqlToMongoDBParser.From_stmtContext context)
         {
 
 
@@ -95,7 +95,7 @@ namespace QueryLanguage
             return null;
         }
 
-        public override string VisitSearch_condition([NotNull] QueryParser.Search_conditionContext context)
+        public override string VisitSearch_condition([NotNull] SqlToMongoDBParser.Search_conditionContext context)
         {
 
             VisitChildren(context);
@@ -103,12 +103,12 @@ namespace QueryLanguage
         }
 
 
-        public override string VisitFunction_predicate([NotNull] QueryParser.Function_predicateContext context)
+        public override string VisitFunction_predicate([NotNull] SqlToMongoDBParser.Function_predicateContext context)
 
         {
             return VisitChildren(context);
         }
-        public override string VisitPredicate([NotNull] QueryParser.PredicateContext context)
+        public override string VisitPredicate([NotNull] SqlToMongoDBParser.PredicateContext context)
         {
 
 
@@ -130,7 +130,7 @@ namespace QueryLanguage
 
 
         }
-        public override string VisitComparison_predicate([NotNull] QueryParser.Comparison_predicateContext context)
+        public override string VisitComparison_predicate([NotNull] SqlToMongoDBParser.Comparison_predicateContext context)
         {
 
             Log("VisitComparison_predicate", ConsoleColor.Gray, context.GetText());
@@ -147,11 +147,11 @@ namespace QueryLanguage
             return query;
 
         }
-        public override string VisitRange_op([NotNull] QueryParser.Range_opContext context)
+        public override string VisitRange_op([NotNull] SqlToMongoDBParser.Range_opContext context)
         {
             return this.Visit(context);
         }
-        public override string VisitAnd([NotNull] QueryParser.AndContext context)
+        public override string VisitAnd([NotNull] SqlToMongoDBParser.AndContext context)
         {
             Log("VisitAnd", ConsoleColor.Gray, context.GetText());
 
@@ -160,26 +160,26 @@ namespace QueryLanguage
         }
 
 
-        public override string VisitOr([NotNull] QueryParser.OrContext context)
+        public override string VisitOr([NotNull] SqlToMongoDBParser.OrContext context)
         {
             Log("VisitOr", ConsoleColor.Gray, context.GetText());
 
             return "$or";
         }
-        public override string VisitEquals([NotNull] QueryParser.EqualsContext context)
+        public override string VisitEquals([NotNull] SqlToMongoDBParser.EqualsContext context)
         {
             Log("VisitEquals", ConsoleColor.Gray, context.GetText());
 
             return "$eq";
 
         }
-        public override string VisitTerm([NotNull] QueryParser.TermContext context)
+        public override string VisitTerm([NotNull] SqlToMongoDBParser.TermContext context)
         {
             Log("VisitTerm", ConsoleColor.White, context.GetText());
 
             return context.GetText();
         }
-        public override string VisitNumber([NotNull] QueryParser.NumberContext context)
+        public override string VisitNumber([NotNull] SqlToMongoDBParser.NumberContext context)
         {
 
             return context.GetText();
