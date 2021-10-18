@@ -91,11 +91,6 @@ namespace QueryLanguage
         }
 
 
-        public override string VisitFunction_predicate([NotNull] SqlToMongoDBParser.Function_predicateContext context)
-
-        {
-            return VisitChildren(context);
-        }
         public override string VisitPredicate([NotNull] SqlToMongoDBParser.PredicateContext context)
         {
 
@@ -135,10 +130,7 @@ namespace QueryLanguage
             return query;
 
         }
-        public override string VisitRange_op([NotNull] SqlToMongoDBParser.Range_opContext context)
-        {
-            return this.Visit(context);
-        }
+      
         public override string VisitAnd([NotNull] SqlToMongoDBParser.AndContext context)
         {
             

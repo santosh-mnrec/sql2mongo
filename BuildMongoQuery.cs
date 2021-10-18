@@ -23,7 +23,7 @@ namespace QueryLanguage
             _elements = elements;
 
         }
-        public Dictionary<object, object> BuildBinary(object op, object left, object right)
+        public object BuildBinary(object op, object left, object right)
         {
 
             return new Dictionary<object, object> {

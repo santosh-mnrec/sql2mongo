@@ -7,7 +7,7 @@ namespace QueryLanguage
     {
         static void Main(string[] args)
         {
-            var sqlQuery = "select valid,santosh from flight where verified='true' or valid='false' or valid==12";
+            var sqlQuery = "select valid,santosh from flight where verified='true' or valid='false' or valid=12 ";
 
             var input = new AntlrInputStream(sqlQuery);
 
