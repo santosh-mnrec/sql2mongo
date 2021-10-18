@@ -1,7 +1,6 @@
-﻿using System;
-using Antlr4.Runtime;
+﻿using Antlr4.Runtime;
 
-namespace QueryLanguage
+namespace SqlToMongoDB
 {
     class Program
     {
