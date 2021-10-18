@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 using Antlr4.Runtime.Misc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace QueryLanguage
 {
@@ -22,29 +19,20 @@ namespace QueryLanguage
             buildMongoQuery = new BuildMongoQuery(elements);
         }
 
-        private void Log(string message, ConsoleColor color, string text)
-        {
-            Console.ForegroundColor = color;
-            Console.Write("\t" + message + "\t" + text);
-            System.Console.WriteLine();
-            Console.ResetColor();
-
-
-        }
 
         private string query = "";
         private Stack<string> stack = new Stack<string>();
 
         public override string VisitQuery(SqlToMongoDBParser.QueryContext context)
         {
-            Log("VisitQuery", ConsoleColor.Red, context.GetText());
+           
 
             Visit(context.select_stmt());
             Visit(context.from_stmt());
             Visit(context.where_stmt());
-            Console.WriteLine(elements);
-       
-            return BuildMongoQuery2.BuildMongoQuery(elements);
+          
+
+            return buildMongoQuery.BuildQuery();
 
         }
 
@@ -89,7 +77,7 @@ namespace QueryLanguage
         {
 
 
-            Log("VisitFrom_stmt", ConsoleColor.Gray, context.GetText());
+           
             elements.Push(context.children[1].GetText());
             buildMongoQuery.Parse("from");
             return null;
@@ -112,7 +100,7 @@ namespace QueryLanguage
         {
 
 
-            Log("VisitPredicate", ConsoleColor.Gray, context.GetText());
+           
             if (context.ChildCount == 1)
             {
                 this.Visit(context.children[0]);
@@ -133,8 +121,8 @@ namespace QueryLanguage
         public override string VisitComparison_predicate([NotNull] SqlToMongoDBParser.Comparison_predicateContext context)
         {
 
-            Log("VisitComparison_predicate", ConsoleColor.Gray, context.GetText());
-            
+           
+
 
             var field = Visit(context.children[0]);
             var op = Visit(context.children[1]);
@@ -153,7 +141,7 @@ namespace QueryLanguage
         }
         public override string VisitAnd([NotNull] SqlToMongoDBParser.AndContext context)
         {
-            Log("VisitAnd", ConsoleColor.Gray, context.GetText());
+            
 
             return "$and";
 
@@ -162,20 +150,19 @@ namespace QueryLanguage
 
         public override string VisitOr([NotNull] SqlToMongoDBParser.OrContext context)
         {
-            Log("VisitOr", ConsoleColor.Gray, context.GetText());
-
+           
             return "$or";
         }
         public override string VisitEquals([NotNull] SqlToMongoDBParser.EqualsContext context)
         {
-            Log("VisitEquals", ConsoleColor.Gray, context.GetText());
+            
 
             return "$eq";
 
         }
         public override string VisitTerm([NotNull] SqlToMongoDBParser.TermContext context)
         {
-            Log("VisitTerm", ConsoleColor.White, context.GetText());
+           
 
             return context.GetText();
         }
@@ -185,7 +172,7 @@ namespace QueryLanguage
             return context.GetText();
         }
 
-
+       
 
     }
 }
