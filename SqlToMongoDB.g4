@@ -48,16 +48,10 @@ FROM : [Ff][Rr][Oo][Mm] ;
 WHERE : [Ww][Hh][Ee][Rr][Ee] ;
 AND : [Aa][Nn][Dd] ;
 OR : [Oo][Rr] ;
-NOT : [Nn][Oo][Tt] ;
-DESCRIBE : [Dd][Ee][Ss][Cc][Rr][Ii][Bb][Ee] ;
-MATCHES : [Mm][Aa][Tt][Cc][Hh][Ee][Ss] ;
+
 EQ : '=' ;
 NE : '!=';
-GT : '>' ;
-LT : '<' ;
-GTE : '>=' ;
-LTE : '<=' ;
-IN : [Ii][Nn];
+
 STAR : '*';
 fragment
 DIGIT : [0-9] ;
@@ -69,12 +63,6 @@ FIELD : [A-Za-z]+((':'|'_')[0-9]*[A-Za-z]*)* ;
 
 TERM : '\''(~[' *?])*'\'' ;
 PHRASE : '\''(~['*?])*'\'' ;
-WILD_CARD :'\''(~[' ])*'\'' ;
 MULTI_PHRASE : '\''(~[' *?])+(~['])+'\'';
-DB_QUOTE_STRING_LIT : ('"'(~["])*'"');
-//STRING_LIT : ('\''(~['])*'\'') ;
-
 COMMA : ',' ;
-LPAREN : '(' ;
-RPAREN : ')' ;
 WS : [ \t\r\n]+ -> skip;
