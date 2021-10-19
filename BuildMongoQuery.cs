@@ -34,11 +34,24 @@ namespace SqlToMongoDB
         }
         public object BuildSelect(object field)
         {
-
-
             return field;
 
         }
+        public object BuildFrom(object op)
+        {
+            return "db." + op;
+
+        }
+        public void Parse(string op)
+        {
+
+            if (op == "$and")
+            {
+                _elements.Push(BuildBinary(op, _elements.Pop(), _elements.Pop()));
+
+
+            }
+            if (op == "$or")
             {
                 _elements.Push(BuildBinary(op, _elements.Pop(), _elements.Pop()));
 
