@@ -3,40 +3,28 @@ using Newtonsoft.Json;
 
 namespace SqlToMongoDB
 {
-    public class BuildMongoQuery
+    public class BuildQuery
     {
-        private Stack<object> _elements;
-        public string BuildQuery()
+        private readonly Stack<object> _elements;
+        public string Build()
         {
 
             var where = _elements.Pop();
             var find = _elements!.Pop();
             var select = _elements.Pop();
 
-            return find + ".find(" + JsonConvert.SerializeObject(where) + "," + JsonConvert.SerializeObject(select) + ")";
+            return $"{find}.find({JsonConvert.SerializeObject(where)},{JsonConvert.SerializeObject(select)})";
 
 
         }
-        public BuildMongoQuery(Stack<object> elements)
-        {
-            _elements = elements;
-
-        }
-        public object BuildBinary(object op, object left, object right)
-        {
-
-            return new Dictionary<object, object> {
+        public BuildQuery(Stack<object> elements) => _elements = elements;
+        public object BuildBinary(object op, object left, object right) => new Dictionary<object, object> {
                 {
                     op,
                     new List<object> {left,right }
                     }
                 };
-        }
-        public object BuildSelect(object field)
-        {
-            return field;
-
-        }
+        public object BuildSelect(object field) => field;
         public object BuildFrom(object op)
         {
             return "db." + op;

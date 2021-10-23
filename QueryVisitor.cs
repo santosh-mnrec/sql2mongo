@@ -1,20 +1,20 @@
-using System.Collections.Generic;
 using Antlr4.Runtime.Misc;
+using System.Collections.Generic;
 
 namespace SqlToMongoDB
 {
 
 
-    public class QueryLanguageVisitor : SqlToMongoDBBaseVisitor<string>
+    public class QueryVisitor : SqlToMongoDBBaseVisitor<string>
     {
 
-        private BuildMongoQuery buildMongoQuery;
-        private static Stack<object> elements = new Stack<object>();
+        private readonly BuildQuery buildMongoQuery;
+        private static readonly Stack<object> elements = new Stack<object>();
 
 
-        public QueryLanguageVisitor()
+        public QueryVisitor()
         {
-            buildMongoQuery = new BuildMongoQuery(elements);
+            buildMongoQuery = new BuildQuery(elements);
         }
 
 
@@ -23,14 +23,14 @@ namespace SqlToMongoDB
 
         public override string VisitQuery(SqlToMongoDBParser.QueryContext context)
         {
-           
+
 
             Visit(context.select_stmt());
             Visit(context.from_stmt());
             Visit(context.where_stmt());
-          
 
-            return buildMongoQuery.BuildQuery();
+
+            return buildMongoQuery.Build();
 
         }
 
@@ -73,9 +73,6 @@ namespace SqlToMongoDB
         }
         public override string VisitFrom_stmt(SqlToMongoDBParser.From_stmtContext context)
         {
-
-
-           
             elements.Push(context.children[1].GetText());
             buildMongoQuery.Parse("from");
             return null;
@@ -92,19 +89,18 @@ namespace SqlToMongoDB
         public override string VisitPredicate([NotNull] SqlToMongoDBParser.PredicateContext context)
         {
 
-
-           
-            if (context.ChildCount == 1)
+            switch (context.ChildCount)
             {
-                this.Visit(context.children[0]);
-
-
-            }
-            else
-            {
-                var op = this.Visit(context.children[0]);
-                this.Visit(context.children[1]); ;
-                buildMongoQuery.Parse(op);
+                case 1:
+                    Visit(context.children[0]);
+                    break;
+                default:
+                    {
+                        var op = Visit(context.children[0]);
+                        Visit(context.children[1]); ;
+                        buildMongoQuery.Parse(op);
+                        break;
+                    }
             }
             return query;
 
@@ -114,7 +110,7 @@ namespace SqlToMongoDB
         public override string VisitComparison_predicate([NotNull] SqlToMongoDBParser.Comparison_predicateContext context)
         {
 
-           
+
 
 
             var field = Visit(context.children[0]);
@@ -128,41 +124,15 @@ namespace SqlToMongoDB
             return query;
 
         }
-      
-        public override string VisitAnd([NotNull] SqlToMongoDBParser.AndContext context)
-        {
-            
 
-            return "$and";
+        public override string VisitAnd([NotNull] SqlToMongoDBParser.AndContext context) => "$and";
 
-        }
+        public override string VisitOr([NotNull] SqlToMongoDBParser.OrContext context) => "$or";
+        public override string VisitEquals([NotNull] SqlToMongoDBParser.EqualsContext context) => "$eq";
+        public override string VisitTerm([NotNull] SqlToMongoDBParser.TermContext context) => context.GetText();
+        public override string VisitNumber([NotNull] SqlToMongoDBParser.NumberContext context) => context.GetText();
 
 
-        public override string VisitOr([NotNull] SqlToMongoDBParser.OrContext context)
-        {
-           
-            return "$or";
-        }
-        public override string VisitEquals([NotNull] SqlToMongoDBParser.EqualsContext context)
-        {
-            
-
-            return "$eq";
-
-        }
-        public override string VisitTerm([NotNull] SqlToMongoDBParser.TermContext context)
-        {
-           
-
-            return context.GetText();
-        }
-        public override string VisitNumber([NotNull] SqlToMongoDBParser.NumberContext context)
-        {
-
-            return context.GetText();
-        }
-
-       
 
     }
 }

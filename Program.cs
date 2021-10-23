@@ -6,6 +6,9 @@ namespace SqlToMongoDB
     {
         static void Main(string[] args)
         {
+            //convert to hex
+
+
             var sqlQuery = "select valid,santosh from flight where verified='true' or valid='false' or valid=12 ";
 
             var input = new AntlrInputStream(sqlQuery);
@@ -18,7 +21,7 @@ namespace SqlToMongoDB
 
             System.Console.WriteLine(tree.ToStringTree(parser));
 
-            var visitor = new QueryLanguageVisitor();
+            var visitor = new QueryVisitor();
             var jpqlQuery = visitor.Visit(tree);
             System.Console.WriteLine(jpqlQuery.ToString());
 
