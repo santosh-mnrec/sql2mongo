@@ -9,7 +9,7 @@ namespace SqlToMongoDB
             //convert to hex
 
 
-            var sqlQuery = "select valid,santosh from flight where verified='true' or valid='false' or valid=12 ";
+            var sqlQuery = "select name,age from employee where verified='true' or IsContractor='true'";
 
             var input = new AntlrInputStream(sqlQuery);
 
@@ -22,8 +22,8 @@ namespace SqlToMongoDB
             System.Console.WriteLine(tree.ToStringTree(parser));
 
             var visitor = new QueryVisitor();
-            var jpqlQuery = visitor.Visit(tree);
-            System.Console.WriteLine(jpqlQuery.ToString());
+            var mongoQuery = visitor.Visit(tree);
+            System.Console.WriteLine(mongoQuery.ToString());
 
         }
     }

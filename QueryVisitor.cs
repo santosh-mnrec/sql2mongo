@@ -5,6 +5,9 @@ namespace SqlToMongoDB
 {
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class QueryVisitor : SqlToMongoDBBaseVisitor<string>
     {
 
